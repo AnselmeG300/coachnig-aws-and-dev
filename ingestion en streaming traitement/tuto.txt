@@ -1,0 +1,1 @@
+https://docs.aws.amazon.com/fr_fr/lambda/latest/dg/with-kinesis-example.html
