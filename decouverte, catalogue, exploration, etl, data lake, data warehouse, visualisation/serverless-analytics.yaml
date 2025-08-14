@@ -221,8 +221,7 @@ Resources:
           VolumeType: "gp2"
           VolumeSize: "50"
       UserData:
-        'Fn::Base64': s3://serverlessanalytics-975050058935-raw/nyc-taxi/yellow-tripdata/
-        https://serverlessanalytics-975050058935-raw.s3.us-east-1.amazonaws.com/nyc-taxi/yellow-tripdata/
+        'Fn::Base64': 
           !Sub 
             - |
               #!/bin/bash -x
