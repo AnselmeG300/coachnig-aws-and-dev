@@ -1,6 +1,4 @@
-Super 👍 Je vais fusionner les deux réponses en un **mini-cours complet, clair, digeste et imagé**. Ton apprenant aura **la théorie + les analogies + la pratique étape par étape** pour utiliser la POO avec TypeScript dans VS Code.
 
----
 
 # 📘 Mini-cours : La Programmation Orientée Objet (POO) et TypeScript
 
