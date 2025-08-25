@@ -1,0 +1,67 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: An Amazon API Gateway REST API that uses request validation.
+Parameters:
+    StageName:
+        Type: String
+        Default: v1
+        Description: Name of API stage.
+Resources:
+  Api:
+    Type: 'AWS::ApiGateway::RestApi'
+    Properties: 
+      Name: request-validation-console-api
+      ApiKeySourceType: HEADER
+  ValidatorResource:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref Api
+      ParentId: !GetAtt Api.RootResourceId
+      PathPart: 'validator'
+  ValidatorMethodPost:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      RestApiId: !Ref Api
+      ResourceId: !Ref ValidatorResource
+      HttpMethod: POST
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      Integration:
+        Type: HTTP
+        IntegrationHttpMethod: GET
+        Uri:  http://petstore-demo-endpoint.execute-api.com/petstore/pets/
+        PassthroughBehavior: WHEN_NO_TEMPLATES
+        IntegrationResponses:
+          - StatusCode: '200'
+      MethodResponses:
+        - StatusCode: '200'
+  ValidatorMethodGet:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      RestApiId: !Ref Api
+      ResourceId: !Ref ValidatorResource
+      HttpMethod: GET
+      ApiKeyRequired: false
+      AuthorizationType: NONE
+      Integration:
+        Type: HTTP
+        IntegrationHttpMethod: GET
+        Uri: http://petstore-demo-endpoint.execute-api.com/petstore/pets/
+        PassthroughBehavior: WHEN_NO_TEMPLATES
+        IntegrationResponses:
+          - StatusCode: '200'
+      MethodResponses:
+        - StatusCode: '200'
+  ApiDeployment:
+    Type: 'AWS::ApiGateway::Deployment'
+    DependsOn:
+      - ValidatorMethodGet
+    Properties:
+      RestApiId: !Ref Api
+      StageName: !Sub '${StageName}'
+Outputs:
+  ApiId:
+    Description: API ID
+    Value: !Ref Api
+  ResourceId:
+    Description: Validator resource ID
+    Value: !Ref ValidatorResource
